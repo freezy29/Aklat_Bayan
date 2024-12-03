@@ -165,13 +165,13 @@ public class UserFragment extends Fragment {
             public Fragment createFragment(int position) {
                 switch (position) {
                     case 0:
-                        return new CatalogFragment();
+                        return new FavoriteFragment();
                     case 1:
                         return new HistoryFragment();
                     case 2:
                         return new AccountSettingsFragment();
                     default:
-                        return new CatalogFragment();
+                        return new FavoriteFragment();
                 }
             }
 

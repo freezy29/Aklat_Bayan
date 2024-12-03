@@ -99,7 +99,7 @@ public class BookDetails extends AppCompatActivity {
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showDownloadDialog();
             }
         });
         btnRead.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +130,7 @@ public class BookDetails extends AppCompatActivity {
             btnDownload.setOnClickListener(v -> showDeleteDialog());
         } else {
             btnDownload.setImageResource(R.drawable.baseline_download_48);
-            btnDownload.setOnClickListener(v -> showDialog());
+            btnDownload.setOnClickListener(v -> showDownloadDialog());
         }
 
         sharedPreferences = getSharedPreferences("Favorites", MODE_PRIVATE);
@@ -177,7 +177,7 @@ public class BookDetails extends AppCompatActivity {
         historyPrefs = getSharedPreferences(HISTORY_PREFS, Context.MODE_PRIVATE);
     }
 
-    private void showDialog() {
+    private void showDownloadDialog() {
         if (downloadUrl == null || downloadUrl.isEmpty()) {
             Toast.makeText(this, "Download not available for this book", Toast.LENGTH_SHORT).show();
             return;
@@ -369,13 +369,11 @@ public class BookDetails extends AppCompatActivity {
             if (bookId != null) {
                 File bookFile = new File(getBookDirectory(), bookId + ".pdf");
                 if (bookFile.exists() && bookFile.delete()) {
-                    // Remove from downloads collection
                     firestore.collection("downloads")
                             .document(bookId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(this, "Book deleted successfully", Toast.LENGTH_SHORT).show();
-                                // Update download button visibility
                                 btnDownload.setVisibility(View.VISIBLE);
                             })
                             .addOnFailureListener(e -> 
