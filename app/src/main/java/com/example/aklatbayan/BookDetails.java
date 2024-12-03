@@ -145,7 +145,6 @@ public class BookDetails extends AppCompatActivity {
                 String currentFavorites = sharedPreferences.getString("favoriteBooks", "");
                 
                 if (btnFave.isChecked()) {
-                    // Add to favorites
                     if (currentFavorites.isEmpty()) {
                         currentFavorites = bookId;
                     } else if (!currentFavorites.contains(bookId)) {

@@ -115,8 +115,8 @@ public class AccountSettingsFragment extends Fragment {
     private void updateUserInfo(String field, String newValue) {
         String currentEmail = sessionManager.getEmail();
         String currentUsername = sessionManager.getUsername();
-        String currentPassword = ""; // You'll need to get this from the database
-        boolean keepSignedIn = sessionManager.keepSignedIn(); // Get current keep signed in state
+        String currentPassword = "";
+        boolean keepSignedIn = sessionManager.keepSignedIn();
 
         switch (field) {
             case "Username":
