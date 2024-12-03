@@ -42,7 +42,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="416dp"
+        android:layout_width="0dp"
         android:layout_height="517dp"
         android:background="@drawable/whitebg"
         android:orientation="vertical"

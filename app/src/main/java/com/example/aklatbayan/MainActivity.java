@@ -23,13 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        // Check if user is logged in AND keep signed in is enabled
         if (sessionManager.isLoggedIn() && sessionManager.keepSignedIn()) {
             startActivity(new Intent(MainActivity.this, MainScreen.class));
             finish();
             return;
         } else if (sessionManager.isLoggedIn() && !sessionManager.keepSignedIn()) {
-            // If logged in but keep signed in is false, clear the session
             sessionManager.clearSession();
         }
 

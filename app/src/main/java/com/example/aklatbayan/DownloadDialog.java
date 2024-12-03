@@ -44,13 +44,11 @@ public class DownloadDialog extends AppCompatActivity {
         setContentView(R.layout.activity_download_dialog);
 
         firestore = FirebaseFirestore.getInstance();
-        
-        // Initialize views
+
         downloadProgress = findViewById(R.id.downloadProgress);
         btnDownloadFull = findViewById(R.id.btnDownloadFull);
         btnCancel = findViewById(R.id.btnCancel);
-        
-        // Get data from intent
+
         bookId = getIntent().getStringExtra("bookId");
         downloadUrl = getIntent().getStringExtra("downloadUrl");
         title = getIntent().getStringExtra("title");
@@ -166,10 +164,8 @@ public class DownloadDialog extends AppCompatActivity {
                 .document(book.getId())
                 .set(book)
                 .addOnSuccessListener(aVoid -> {
-                    // Book info saved successfully
                 })
                 .addOnFailureListener(e -> {
-                    // Handle failure
                 });
     }
 

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CatalogFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar loadingIndicator;
     private TextView emptyView;

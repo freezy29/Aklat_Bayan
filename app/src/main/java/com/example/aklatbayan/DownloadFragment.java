@@ -92,7 +92,6 @@ public class DownloadFragment extends Fragment {
     }
 
     private Model getBookDetails(String bookId) {
-        // Get book details from SharedPreferences
         android.content.SharedPreferences prefs = requireContext().getSharedPreferences("downloaded_books", android.content.Context.MODE_PRIVATE);
         String bookJson = prefs.getString(bookId, null);
         if (bookJson != null) {
@@ -107,28 +106,4 @@ public class DownloadFragment extends Fragment {
         loadDownloadedBooks();
     }
 
-    private void showDeleteDialog(Model book) {
-        Dialog deleteDialog = new Dialog(requireContext(), R.style.Dialog_style);
-        deleteDialog.setContentView(R.layout.delete_dialog);
-        deleteDialog.getWindow().setBackgroundDrawableResource(R.drawable.blue_popup);
-
-        Button btnDelete = deleteDialog.findViewById(R.id.btnDelete);
-        Button btnCancel = deleteDialog.findViewById(R.id.btnCancel);
-
-        btnDelete.setOnClickListener(v -> {
-            File bookFile = new File(requireContext().getFilesDir() + "/books/" + book.getId() + ".pdf");
-            if (bookFile.exists() && bookFile.delete()) {
-                // Remove book details from SharedPreferences
-                android.content.SharedPreferences prefs = requireContext().getSharedPreferences("downloaded_books", android.content.Context.MODE_PRIVATE);
-                prefs.edit().remove(book.getId()).apply();
-                
-                Toast.makeText(requireContext(), "Book deleted successfully", Toast.LENGTH_SHORT).show();
-                loadDownloadedBooks(); // Refresh the list
-            }
-            deleteDialog.dismiss();
-        });
-
-        btnCancel.setOnClickListener(v -> deleteDialog.dismiss());
-        deleteDialog.show();
-    }
 }

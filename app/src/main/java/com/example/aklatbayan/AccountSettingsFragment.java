@@ -34,8 +34,7 @@ public class AccountSettingsFragment extends Fragment {
         
         sessionManager = new SessionManager(requireContext());
         dbHelper = new DBHelper(requireContext());
-        
-        // Initialize views
+
         txtUsername = view.findViewById(R.id.userNamebar);
         txtEmail = view.findViewById(R.id.Emailbar);
         txtPassword = view.findViewById(R.id.Passbar);
@@ -43,24 +42,20 @@ public class AccountSettingsFragment extends Fragment {
         btnEditEmail = view.findViewById(R.id.btnEditEmail);
         btnEditPassword = view.findViewById(R.id.btnEditPassword);
         btnLogout = view.findViewById(R.id.btnLogout);
-        
-        // Display user info
+
         txtUsername.setText(sessionManager.getUsername());
         txtEmail.setText(sessionManager.getEmail());
-        txtPassword.setText("••••••••"); // Show password dots
-        
-        // Set up edit button click listeners
+        txtPassword.setText("••••••••");
+
         btnEditUsername.setOnClickListener(v -> showEditDialog("Username", sessionManager.getUsername()));
         btnEditEmail.setOnClickListener(v -> showEditDialog("Email", sessionManager.getEmail()));
         btnEditPassword.setOnClickListener(v -> showEditDialog("Password", ""));
-        
-        // Existing logout button logic
+
         btnLogout.setOnClickListener(v -> {
             Dialog logoutDialog = new Dialog(requireContext(), R.style.Dialog_style);
             logoutDialog.setContentView(R.layout.activity_logout_popup);
             logoutDialog.getWindow().setBackgroundDrawableResource(R.drawable.blue_popup);
-            
-            // Set the dialog width to 80% of screen width
+
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(logoutDialog.getWindow().getAttributes());
             lp.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.8);
@@ -70,7 +65,6 @@ public class AccountSettingsFragment extends Fragment {
             Button btnCancel = logoutDialog.findViewById(R.id.cncl);
 
             btnLogout.setOnClickListener(v2 -> {
-                // Clear all app data before logout
                 clearAppData();
                 sessionManager.logout();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -121,8 +115,8 @@ public class AccountSettingsFragment extends Fragment {
     private void updateUserInfo(String field, String newValue) {
         String currentEmail = sessionManager.getEmail();
         String currentUsername = sessionManager.getUsername();
-        String currentPassword = ""; // You'll need to get this from the database
-        boolean keepSignedIn = sessionManager.keepSignedIn(); // Get current keep signed in state
+        String currentPassword = "";
+        boolean keepSignedIn = sessionManager.keepSignedIn();
 
         switch (field) {
             case "Username":
@@ -149,7 +143,6 @@ public class AccountSettingsFragment extends Fragment {
 
     private void clearAppData() {
         try {
-            // Clear downloaded books
             File booksDir = new File(requireContext().getFilesDir(), "books");
             if (booksDir.exists()) {
                 for (File file : booksDir.listFiles()) {
@@ -157,7 +150,6 @@ public class AccountSettingsFragment extends Fragment {
                 }
             }
 
-            // Clear SharedPreferences
             SharedPreferences downloadedBooks = requireContext().getSharedPreferences("downloaded_books", Context.MODE_PRIVATE);
             downloadedBooks.edit().clear().apply();
 
