@@ -45,7 +45,6 @@ public class BookPdf extends AppCompatActivity {
         binding = ActivityBookPdfBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize views
         btnBack = findViewById(R.id.btnBack);
         txtBookTitle = findViewById(R.id.txtBookTitle);
         txtPageNumber = findViewById(R.id.txtPageNumber);
@@ -56,7 +55,6 @@ public class BookPdf extends AppCompatActivity {
         bookId = getIntent().getStringExtra("id");
         String bookTitle = getIntent().getStringExtra("title");
 
-        // Set book title
         txtBookTitle.setText(bookTitle != null ? bookTitle : "Book Reader");
 
         btnBack.setOnClickListener(v -> onBackPressed());

@@ -120,14 +120,13 @@ public class BookDetails extends AppCompatActivity {
 
         bookReadingProgress = findViewById(R.id.bookReadingProgress);
         String bookId = getIntent().getStringExtra("id");
-        
-        // Load reading progress
+
         if (bookId != null) {
             loadReadingProgress(bookId);
         }
 
         if (isBookDownloaded(getIntent().getStringExtra("id"))) {
-            btnDownload.setImageResource(R.drawable.baseline_delete_24); // Create this drawable
+            btnDownload.setImageResource(R.drawable.baseline_delete_24);
             btnDownload.setOnClickListener(v -> showDeleteDialog());
         } else {
             btnDownload.setImageResource(R.drawable.baseline_download_48);
@@ -137,7 +136,6 @@ public class BookDetails extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("Favorites", MODE_PRIVATE);
         favoriteBooks = sharedPreferences.getString("favoriteBooks", "");
 
-        // Check if book is already favorite
         btnFave.setChecked(favoriteBooks.contains(bookId));
 
         btnFave.setOnClickListener(new View.OnClickListener() {
@@ -150,12 +148,11 @@ public class BookDetails extends AppCompatActivity {
                     // Add to favorites
                     if (currentFavorites.isEmpty()) {
                         currentFavorites = bookId;
-                    } else if (!currentFavorites.contains(bookId)) {  // Check if book is not already in favorites
+                    } else if (!currentFavorites.contains(bookId)) {
                         currentFavorites += "," + bookId;
                     }
                     Toast.makeText(BookDetails.this, "Added to favorites", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Remove from favorites
                     String[] favorites = currentFavorites.split(",");
                     StringBuilder newFavorites = new StringBuilder();
                     for (String id : favorites) {
@@ -170,7 +167,6 @@ public class BookDetails extends AppCompatActivity {
                     Toast.makeText(BookDetails.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                 }
 
-                // Save updated favorites
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("favoriteBooks", currentFavorites);
                 editor.apply();
@@ -335,14 +331,12 @@ public class BookDetails extends AppCompatActivity {
     }
 
     private void saveDownloadedBook(Model book) {
-        // Save book details to SharedPreferences
         android.content.SharedPreferences prefs = getSharedPreferences("downloaded_books", Context.MODE_PRIVATE);
         String bookJson = new com.google.gson.Gson().toJson(book);
         prefs.edit().putString(book.getId(), bookJson).apply();
     }
 
     private void loadReadingProgress(String bookId) {
-        // Replace Firestore code with SharedPreferences
         SharedPreferences readingProgress = getSharedPreferences("ReadingProgress", Context.MODE_PRIVATE);
         float progress = readingProgress.getFloat(bookId + "_progress", 0f);
         
@@ -357,7 +351,6 @@ public class BookDetails extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload progress when returning to this activity
         String bookId = getIntent().getStringExtra("id");
         if (bookId != null) {
             loadReadingProgress(bookId);
@@ -404,7 +397,6 @@ public class BookDetails extends AppCompatActivity {
         SharedPreferences historyPrefs = getSharedPreferences(HISTORY_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = historyPrefs.edit();
 
-        // Save each field separately with bookId as prefix
         editor.putString(bookId + "_title", getIntent().getStringExtra("txtTitle"));
         editor.putString(bookId + "_author", getIntent().getStringExtra("author"));
         editor.putString(bookId + "_desc", getIntent().getStringExtra("desc"));
@@ -414,21 +406,17 @@ public class BookDetails extends AppCompatActivity {
         editor.putString(bookId + "_thumbnailUrl", getIntent().getStringExtra("thumbnailUrl"));
         editor.putLong(bookId + "_timestamp", System.currentTimeMillis());
 
-        // Maintain order of history items
         String historyOrder = historyPrefs.getString("history_order", "");
         List<String> historyIds = new ArrayList<>();
         if (!historyOrder.isEmpty()) {
             historyIds = new ArrayList<>(Arrays.asList(historyOrder.split(",")));
         }
-        
-        // Remove if exists and add to front
+
         historyIds.remove(bookId);
         historyIds.add(0, bookId);
 
-        // Limit history size
         if (historyIds.size() > 50) {
             String removedId = historyIds.remove(historyIds.size() - 1);
-            // Clean up old entry
             editor.remove(removedId + "_title");
             editor.remove(removedId + "_author");
             editor.remove(removedId + "_desc");
@@ -439,7 +427,6 @@ public class BookDetails extends AppCompatActivity {
             editor.remove(removedId + "_timestamp");
         }
 
-        // Save updated order
         editor.putString("history_order", TextUtils.join(",", historyIds));
         editor.apply();
     }

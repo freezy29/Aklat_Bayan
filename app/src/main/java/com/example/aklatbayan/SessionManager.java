@@ -51,10 +51,8 @@ public class SessionManager {
 
     public void logout() {
         if (keepSignedIn()) {
-            // Only set logged out state but keep credentials
             editor.putBoolean(KEY_IS_LOGGED_IN, false);
         } else {
-            // Clear everything if keep signed in is false
             editor.clear();
         }
         editor.commit();

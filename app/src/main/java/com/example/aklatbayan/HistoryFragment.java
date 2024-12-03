@@ -58,11 +58,9 @@ public class HistoryFragment extends Fragment {
             String currentLabel = null;
             
             for (String bookId : bookIds) {
-                // Get timestamp first to check time period
                 long timestamp = historyPrefs.getLong(bookId + "_timestamp", 0);
                 String timeLabel = getTimeLabel(timestamp);
-                
-                // Add header if it's a new time period
+
                 if (!timeLabel.equals(currentLabel)) {
                     Model header = new Model();
                     header.setTitle(timeLabel);
@@ -70,8 +68,7 @@ public class HistoryFragment extends Fragment {
                     historyList.add(header);
                     currentLabel = timeLabel;
                 }
-                
-                // Create book model from stored data
+
                 Model book = new Model(
                     bookId,
                     historyPrefs.getString(bookId + "_title", ""),

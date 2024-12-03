@@ -48,11 +48,9 @@ public class LoginPage extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         keepSignedIn = findViewById(R.id.checkBox);
-        
-        // Check if user credentials are saved
+
         if (sessionManager.keepSignedIn()) {
             etEmail.setText(sessionManager.getEmail());
-            // Don't pre-fill password for security
         }
 
         passwordVisibilityToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -77,13 +75,11 @@ public class LoginPage extends AppCompatActivity {
                     Boolean checkCredentials = dbHelper.checkUser(EMAIL, PASSWORD);
                     if (checkCredentials) {
                         try {
-                            // Create necessary directories
                             File booksDir = new File(getFilesDir(), "books");
                             if (!booksDir.exists()) {
                                 booksDir.mkdirs();
                             }
 
-                            // Save login session with keep signed in preference
                             String username = dbHelper.getUsername(EMAIL);
                             sessionManager.setLogin(true, username, EMAIL, keepSignedIn.isChecked());
                             

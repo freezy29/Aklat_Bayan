@@ -38,7 +38,6 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Adding User
     public void addNewUser (String USERNAME, String EMAIL, String PASSWORD) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -61,7 +60,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return isValid;
     }
 
-    //Checking if available pa username
     public boolean usernameAvailability(String USERNAME) {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + tblname + " WHERE " + columnUserName + "=?";
@@ -71,25 +69,21 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return isTaken;
     }
-    // Get all records
     public Cursor getAllUsers() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + tblname + " WHERE " + columnDeleted + "='NO'";
         return db.rawQuery(query, null);
     }
-    // Get records by ID
     public Cursor getRecord(String ID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + tblname + " WHERE " + columnID + "='" + ID + "'";
         return db.rawQuery(query, null);
     }
-    // Get records by Username
     public Cursor getUserbyUsername(String USERNAME) {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + tblname + " WHERE " + columnUserName + "=? AND " + columnDeleted + "='NO'";
         return db.rawQuery(query, new String[]{USERNAME});
     }
-    // Update User
     public boolean updateUser(String USERNAME, String EMAIL, String PASSWORD) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -101,7 +95,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return result > 0;
     }
-    // Delete User (Logical Deletion)
     public boolean deleteUser(String EMAIL) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

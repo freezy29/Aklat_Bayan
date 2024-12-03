@@ -48,21 +48,17 @@ public class UserFragment extends Fragment {
                            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        // Initialize components
         sessionManager = new SessionManager(requireContext());
         sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
 
-        // Initialize views
         profileImg = view.findViewById(R.id.profileImage);
         imgPick = view.findViewById(R.id.imgPick);
         userNameText = view.findViewById(R.id.userNamebar);
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabLayout);
 
-        // Set username
         userNameText.setText(sessionManager.getUsername());
 
-        // Set up image picker launcher
         imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -75,13 +71,10 @@ public class UserFragment extends Fragment {
             }
         );
 
-        // Set up click listener for image picker button
         imgPick.setOnClickListener(v -> openImagePicker());
 
-        // Load existing profile image if any
         loadProfileImage();
 
-        // Set up ViewPager and TabLayout
         setupViewPager();
         
         return view;
@@ -94,16 +87,13 @@ public class UserFragment extends Fragment {
 
     private void saveImage(Uri imageUri) {
         try {
-            // Convert URI to Bitmap
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
-            
-            // Create directory if it doesn't exist
+
             File directory = new File(requireContext().getFilesDir(), "profile_images");
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
-            // Delete all existing profile images in the directory
             if (directory.exists() && directory.isDirectory()) {
                 File[] files = directory.listFiles();
                 if (files != null) {
@@ -113,28 +103,22 @@ public class UserFragment extends Fragment {
                 }
             }
 
-            // Create new file
             String fileName = sessionManager.getUsername() + "_profile.jpg";
             File file = new File(directory, fileName);
 
-            // Save new bitmap to file
             FileOutputStream fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.close();
 
-            // Clear any existing image from Glide's cache
             Glide.get(requireContext()).clearMemory();
-            // Clear disk cache in background
             new Thread(() -> {
                 Glide.get(requireContext()).clearDiskCache();
             }).start();
 
-            // Save file path to SharedPreferences
             sharedPreferences.edit()
                     .putString(PROFILE_IMAGE_PREF, file.getAbsolutePath())
                     .apply();
 
-            // Load the saved image with animation and skip cache
             Glide.with(this)
                     .load(file)
                     .skipMemoryCache(true)
@@ -166,12 +150,10 @@ public class UserFragment extends Fragment {
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(profileImg);
             } else {
-                // If file doesn't exist, clear the preference and set default image
                 sharedPreferences.edit().remove(PROFILE_IMAGE_PREF).apply();
                 profileImg.setImageResource(R.drawable.user_svgrepo_com);
             }
         } else {
-            // Set default image if no profile image is saved
             profileImg.setImageResource(R.drawable.user_svgrepo_com);
         }
     }
