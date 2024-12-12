@@ -12,7 +12,6 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:fontFamily="sans-serif"
         android:text="Welcome Back User!"
         android:textAlignment="center"
@@ -29,8 +28,8 @@
     <LinearLayout
 
         android:id="@+id/linearLayout2"
-        android:layout_width="412dp"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/whitebg"
         android:orientation="vertical"
         android:paddingLeft="30dp"
